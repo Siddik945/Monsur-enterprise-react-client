@@ -16,7 +16,12 @@ const ProductCategories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:3000/product-categories');
+      const token = localStorage.getItem('access_token');
+      const response = await fetch('http://localhost:3000/product-categories', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
 
       if (Array.isArray(data)) {
@@ -95,9 +100,18 @@ const ProductCategories = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/product-categories/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 

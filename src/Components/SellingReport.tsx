@@ -111,7 +111,21 @@ const SellingReport = () => {
         params.append('end_date', filter.end_date);
       }
 
-      const res = await fetch(`${API_BASE_URL}/product-details/sellingReport?${params.toString()}`);
+      const token = localStorage.getItem('access_token');
+      const res = await fetch(
+        `${API_BASE_URL}/product-details/sellingReport?${params.toString()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      // Token expired or missing, redirect to login
+      if (res.status === 401) {
+        window.location.href = '/';
+      }
 
       if (!res.ok) {
         throw new Error('Failed to fetch selling report');
@@ -119,11 +133,11 @@ const SellingReport = () => {
 
       const json = await res.json();
 
-      console.log('Selling report response:', json);
+      // console.log('Selling report response:', json);
 
       const reportData = getArrayData(json);
 
-      console.log('Selling report data:', reportData);
+      // console.log('Selling report data:', reportData);
 
       setData(reportData);
     } catch (error) {
@@ -203,7 +217,7 @@ const SellingReport = () => {
     }));
 
     rows.push({
-      '#': '',
+      '#': 0,
       Date: '',
       Company: '',
       'Site Name': '',

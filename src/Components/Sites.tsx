@@ -45,8 +45,19 @@ const Sites = () => {
 
   const fetchCompanies = async () => {
     try {
-      const res = await fetch('http://localhost:3000/companies');
+      const token = localStorage.getItem('access_token');
+      const res = await fetch('http://localhost:3000/companies', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await res.json();
+
+      // Token expired or missing, redirect to login
+      if (res.status === 401) {
+        window.location.href = '/';
+      }
       setCompanies(getArray(data));
     } catch (error) {
       console.error(error);
@@ -56,8 +67,19 @@ const Sites = () => {
 
   const fetchSites = async () => {
     try {
-      const res = await fetch('http://localhost:3000/sites');
+      const token = localStorage.getItem('access_token');
+      const res = await fetch('http://localhost:3000/sites', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await res.json();
+
+      // Token expired or missing, redirect to login
+      if (res.status === 401) {
+        window.location.href = '/';
+      }
       setSites(getArray(data));
     } catch (error) {
       console.error(error);
@@ -91,16 +113,23 @@ const Sites = () => {
 
       const method = editId ? 'PUT' : 'POST';
 
+      const token = localStorage.getItem('access_token');
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           ...formData,
           companyId: Number(formData.companyId),
         }),
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 
@@ -148,9 +177,19 @@ const Sites = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/sites/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 

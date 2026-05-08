@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CompanySummary {
   companyId: number | string;
@@ -43,10 +43,29 @@ const TotalDue = () => {
       setLoading(true);
 
       try {
+        const token = localStorage.getItem('access_token');
         const [priceRes, paidRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/product-details/allCompany/summary`),
-          fetch(`${API_BASE_URL}/payments/allCompany/summary`),
+          fetch(`${API_BASE_URL}/product-details/allCompany/summary`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
+          fetch(`${API_BASE_URL}/payments/allCompany/summary`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
         ]);
+
+        if (priceRes.status === 401) {
+          window.location.href = '/';
+        }
+
+        if (paidRes.status === 401) {
+          window.location.href = '/';
+        }
 
         if (!priceRes.ok) {
           throw new Error('Failed to fetch total price summary');

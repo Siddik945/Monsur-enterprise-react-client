@@ -99,7 +99,18 @@ const PaymentReport = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/companies`);
+        const token = localStorage.getItem('access_token');
+        const res = await fetch(`${API_BASE_URL}/companies`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // Token expired or missing, redirect to login
+        if (res.status === 401) {
+          window.location.href = '/';
+        }
 
         if (!res.ok) {
           throw new Error('Failed to fetch companies');

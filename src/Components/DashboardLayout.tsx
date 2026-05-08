@@ -2,22 +2,24 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useState } from 'react';
 
 const sidebarItems = [
-  { name: 'Dashboard', path: '/' },
-  { name: 'Companies', path: '/companies' },
-  { name: 'Sites', path: '/sites' },
-  { name: 'Order Now', path: '/order-now' },
-  { name: 'Product Details', path: '/product-details' },
-  { name: 'Contract', path: '/contract' },
-  { name: 'Product Categories', path: '/categories' },
-  { name: 'Payment Methods', path: '/payment-methods' },
-  { name: 'Payments', path: '/payments' },
-  { name: 'Total Due', path: '/total-due' },
+  { name: 'Dashboard', path: '/dashboard' },
+  { name: 'Companies', path: '/dashboard/companies' },
+  { name: 'Sites', path: '/dashboard/sites' },
+  { name: 'Order Now', path: '/dashboard/order-now' },
+  { name: 'Product Details', path: '/dashboard/product-details' },
+  { name: 'Contract', path: '/dashboard/contract' },
+  { name: 'Product Categories', path: '/dashboard/categories' },
+  { name: 'Payment Methods', path: '/dashboard/payment-methods' },
+  { name: 'Payments', path: '/dashboard/payments' },
+  { name: 'Total Due', path: '/dashboard/total-due' },
+  { name: 'Admin', path: '/dashboard/admin' },
+  { name: 'Logout', path: '/dashboard/logout' },
 ];
 
 const navbarItems = [
-  { name: 'Selling Report', path: '/selling' },
-  { name: 'Client Report', path: '/client' },
-  { name: 'Payment Report', path: '/payment-report' },
+  { name: 'Selling Report', path: '/dashboard/selling' },
+  { name: 'Client Report', path: '/dashboard/client' },
+  { name: 'Payment Report', path: '/dashboard/payment-report' },
 ];
 
 const DashboardLayout = () => {
@@ -52,39 +54,44 @@ const DashboardLayout = () => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
-          <div>
-            <h1 className="text-xl font-bold tracking-wide">MONSUR ENTERPRISE</h1>
-            <p className="text-sm text-emerald-200">Business Management Panel</p>
+        {/* Sidebar content wrapper */}
+        <div className="flex h-full flex-col">
+          {/* Header */}
+          <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
+            <div>
+              <h1 className="text-xl font-bold tracking-wide">MONSUR ENTERPRISE</h1>
+              <p className="text-sm text-emerald-200">Business Management Panel</p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="text-2xl text-white lg:hidden"
+            >
+              ×
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            className="text-2xl text-white lg:hidden"
-          >
-            ×
-          </button>
+          {/* Navigation (scrollable) */}
+          <nav className="mt-6 flex-1 overflow-y-auto px-4 pb-4">
+            {sidebarItems.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-white text-emerald-900 shadow-md'
+                      : 'text-emerald-100 hover:bg-emerald-700 hover:text-white'
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </nav>
         </div>
-
-        <nav className="mt-6 space-y-1 px-4">
-          {sidebarItems.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.path}
-              onClick={() => setIsOpen(false)}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-white text-emerald-900 shadow-md'
-                    : 'text-emerald-100 hover:bg-emerald-700 hover:text-white'
-                }`
-              }
-            >
-              {item.name}
-            </NavLink>
-          ))}
-        </nav>
       </aside>
 
       {/* Main Area */}
@@ -109,8 +116,10 @@ const DashboardLayout = () => {
             ))}
           </nav>
 
-          <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800">
-            Admin
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800">
+              Admin
+            </div>
           </div>
         </header>
 

@@ -30,20 +30,53 @@ const Home = () => {
   };
 
   const fetchSites = async () => {
-    const response = await fetch('http://localhost:3000/sites');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/sites', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     setSites(getArray(data));
   };
 
   const fetchCategories = async () => {
-    const response = await fetch('http://localhost:3000/product-categories');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/product-categories', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     setCategories(getArray(data));
   };
 
   const fetchOrders = async () => {
-    const response = await fetch('http://localhost:3000/orders');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/orders', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     setOrders(getArray(data));
   };
 

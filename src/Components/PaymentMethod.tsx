@@ -21,8 +21,19 @@ const PaymentMethod = () => {
 
   const fetchMethods = async () => {
     try {
-      const response = await fetch('http://localhost:3000/methods');
+      const token = localStorage.getItem('access_token');
+      const response = await fetch('http://localhost:3000/methods', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await response.json();
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
       setMethods(getArray(data));
     } catch (error) {
       console.error(error);
@@ -88,9 +99,19 @@ const PaymentMethod = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/methods/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 

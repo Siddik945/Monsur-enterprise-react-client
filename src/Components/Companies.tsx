@@ -30,8 +30,20 @@ const Companies = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await fetch('http://localhost:3000/companies');
+      const token = localStorage.getItem('access_token');
+      // console.log(token);
+      const response = await fetch('http://localhost:3000/companies', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await response.json();
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       if (Array.isArray(data)) {
         setCompanies(data);
@@ -72,13 +84,19 @@ const Companies = () => {
 
       const method = editId ? 'PUT' : 'POST';
 
+      const token = localStorage.getItem('access_token');
       const response = await fetch(url, {
         method,
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 
@@ -121,8 +139,13 @@ const Companies = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/companies/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
 
       const data = await response.json();

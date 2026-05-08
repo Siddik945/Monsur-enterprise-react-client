@@ -48,19 +48,54 @@ const OrderNow = () => {
   };
 
   const fetchSites = async () => {
-    const response = await fetch('http://localhost:3000/sites');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/sites', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     setSites(getArray(data));
   };
 
   const fetchCategories = async () => {
-    const response = await fetch('http://localhost:3000/product-categories');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/product-categories', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
+
     const data = await response.json();
     setCategories(getArray(data));
   };
 
   const fetchOrders = async () => {
-    const response = await fetch('http://localhost:3000/orders');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/orders', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
+
     const data = await response.json();
     setOrders(getArray(data));
   };
@@ -93,9 +128,11 @@ const OrderNow = () => {
 
       const method = editId ? 'PUT' : 'POST';
 
+      const token = localStorage.getItem('access_token');
       const response = await fetch(url, {
         method,
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -105,6 +142,11 @@ const OrderNow = () => {
           date: formData.date,
         }),
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 
@@ -154,9 +196,19 @@ const OrderNow = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/orders/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 

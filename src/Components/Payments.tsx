@@ -48,19 +48,53 @@ const Payments = () => {
   };
 
   const fetchCompanies = async () => {
-    const response = await fetch('http://localhost:3000/companies');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/companies', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
     const data = await response.json();
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     setCompanies(getArray(data));
   };
 
   const fetchMethods = async () => {
-    const response = await fetch('http://localhost:3000/methods');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/methods', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
+
     const data = await response.json();
     setMethods(getArray(data));
   };
 
   const fetchPayments = async () => {
-    const response = await fetch('http://localhost:3000/payments');
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('http://localhost:3000/payments', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Token expired or missing, redirect to login
+    if (response.status === 401) {
+      window.location.href = '/';
+    }
     const data = await response.json();
     setPayments(getArray(data));
   };
@@ -102,10 +136,12 @@ const Payments = () => {
 
       const method = editId ? 'PUT' : 'POST';
 
+      const token = localStorage.getItem('access_token');
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           companyId: Number(formData.companyId),
@@ -153,9 +189,18 @@ const Payments = () => {
     if (!confirmDelete) return;
 
     try {
+      const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:3000/payments/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      // Token expired or missing, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/';
+      }
 
       const data = await response.json();
 

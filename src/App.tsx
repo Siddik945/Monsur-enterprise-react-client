@@ -13,12 +13,16 @@ import PaymentMethods from './Components/PaymentMethod';
 import Payments from './Components/Payments';
 import TotalDue from './Components/TotalDue';
 import Contract from './Components/Contract';
+import LayOut from './pages/Layout';
+import Logout from './Components/Logout';
+import Admin from './Components/Admin';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<DashboardLayout />}>
+        <Route path="/" element={<LayOut />} />
+        <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Home />} />
           <Route path="selling" element={<SellingReport />} />
           <Route path="client" element={<ClientView />} />
@@ -32,6 +36,8 @@ export default function App() {
           <Route path="payments" element={<Payments />} />
           <Route path="total-due" element={<TotalDue />} />
           <Route path="contract" element={<Contract />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
