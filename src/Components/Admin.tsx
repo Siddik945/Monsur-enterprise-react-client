@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 type User = {
   id: number;
   email: string;
+  password: string;
   role: 'ADMIN' | 'USER';
 };
 
@@ -95,7 +96,7 @@ const Admin = () => {
     setEditId(user.id);
     setFormData({
       email: user.email,
-      password: '',
+      password: user.password,
       role: user.role,
     });
   };

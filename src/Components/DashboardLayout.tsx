@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const sidebarItems = [
   { name: 'Dashboard', path: '/dashboard' },
@@ -24,6 +24,31 @@ const navbarItems = [
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  const fetchCompanies = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+
+      const res = await fetch('http://localhost:3000/auth/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      // console.log(data);
+      setUser(data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  console.log(user);
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -117,9 +142,13 @@ const DashboardLayout = () => {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800">
-              Admin
-            </div>
+            <button
+              type="button"
+              onClick={() => setIsUserModalOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-700 text-sm font-bold text-white shadow hover:bg-emerald-800"
+            >
+              {user?.role?.charAt(0)}
+            </button>
           </div>
         </header>
 
@@ -130,6 +159,32 @@ const DashboardLayout = () => {
           </div>
         </section>
       </main>
+
+      {isUserModalOpen && (
+        <div className="fixed top-16 right-4 z-50 w-72 rounded-2xl bg-white p-5 shadow-xl ring-1 ring-slate-200">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-slate-800">User Profile</h2>
+
+            <button
+              type="button"
+              onClick={() => setIsUserModalOpen(false)}
+              className="text-2xl font-bold text-slate-500 hover:text-slate-800"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="mt-5 flex flex-col items-center">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-700 text-xl font-bold text-white">
+              {user?.role}
+            </div>
+
+            <p className="mt-4 text-center text-base font-medium break-all text-slate-800">
+              Email: {user?.email}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
