@@ -306,44 +306,38 @@ export default function Layout() {
           </div>
         </section>
 
-        <section id="services" className="bg-white py-2">
+        <section id="services" className="bg-white py-20">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="relative mx-auto mt-12 flex h-130 max-w-4xl items-center justify-center overflow-hidden sm:h-155">
-              <div className="z-10 flex h-36 w-36 items-center justify-center rounded-full bg-emerald-700 text-center text-xl font-extrabold text-white shadow-xl ring-8 ring-emerald-100 sm:h-48 sm:w-48 sm:text-2xl">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Our Services
-              </div>
+              </h2>
 
-              {[
-                'সিংগের পাথর',
-                'ভুতু ভাঙ্গা পাথর',
-                'রাইটার পাথর',
-                'ভুটান পাথর',
-                'পাকুর পাথর',
-                'সাদা এলসি পাথর',
-                'কালো এলসি পাথর',
-                'ইট',
-                'ইটের খোয়া',
-                'ভিটি বালি',
-                'সাদা আস্তর বালি',
-                'সিলেট বালি',
-              ].map((service, index, arr) => {
-                const angle = (index / arr.length) * 2 * Math.PI;
-                const radius = 190;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
+              <p className="mt-5 text-lg leading-8 text-slate-600">
+                এখানে সকল প্রকার ইট, ইটের খোয়া, সাদা আস্তর বালি ময়মনসিংহ, সাদা আস্তর বালি ভুয়াপুর,
+                সিলেট বালি, সাদা এলসি পাথর, কালো এলসি পাথর, পাকুর পাথর, ভুটান পাথর, রাইটার পাথর,
+                ভুতু ভাঙ্গা পাথর, সিংগের পাথর পাওয়া যায়।
+              </p>
+            </div>
 
-                return (
-                  <div
-                    key={service}
-                    className="absolute flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 p-2 text-center text-xs font-bold text-slate-700 shadow-md ring-1 ring-slate-200 sm:h-24 sm:w-24 sm:text-sm"
-                    style={{
-                      transform: `translate(${x}px, ${y}px)`,
-                    }}
-                  >
-                    {service}
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {['Reliable Service', 'Professional Support', 'Future Expansion'].map((service) => (
+                <div
+                  key={service}
+                  className="rounded-3xl bg-slate-50 p-8 text-center shadow-sm ring-1 ring-slate-200"
+                >
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-700 text-2xl font-black text-white">
+                    ✓
                   </div>
-                );
-              })}
+
+                  <h3 className="mt-6 text-xl font-bold text-slate-900">{service}</h3>
+
+                  <p className="mt-3 text-slate-600">
+                    Monsur Enterprise is focused on providing dependable and improved services for
+                    clients.
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
