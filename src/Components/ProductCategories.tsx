@@ -95,8 +95,8 @@ const ProductCategories = () => {
 
     try {
       const url = editId
-        ? `http://localhost:3000/product-categories/${editId}`
-        : 'http://localhost:3000/product-categories';
+        ? `${API_BASE_URL}/product-categories/${editId}`
+        : `${API_BASE_URL}/product-categories`;
 
       const method = editId ? 'PUT' : 'POST';
       const token = localStorage.getItem('access_token');

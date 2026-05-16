@@ -230,7 +230,7 @@ const OrderNow = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:3000/orders/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

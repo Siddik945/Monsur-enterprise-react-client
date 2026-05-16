@@ -13,6 +13,7 @@ interface ErrorResponse {
     };
   };
 }
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const Auth = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState('');
 
-  const API_URL = 'http://localhost:3000/auth';
+  const API_URL = `${API_BASE_URL}/auth`;
 
   const handleRegister = async () => {
     try {

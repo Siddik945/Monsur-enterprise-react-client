@@ -45,12 +45,13 @@ const Admin = () => {
     setIsModalOpen(false);
     resetForm();
   };
+  const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch('http://localhost:3000/admin', {
+      const response = await fetch(`${API_BASE_URL}/admin`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -97,7 +98,7 @@ const Admin = () => {
     setMessage('');
 
     try {
-      const url = editId ? `http://localhost:3000/admin/${editId}` : 'http://localhost:3000/admin';
+      const url = editId ? `${API_BASE_URL}/admin/${editId}` : `${API_BASE_URL}/admin`;
 
       const method = editId ? 'PUT' : 'POST';
       const token = localStorage.getItem('access_token');
@@ -163,7 +164,7 @@ const Admin = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:3000/admin/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

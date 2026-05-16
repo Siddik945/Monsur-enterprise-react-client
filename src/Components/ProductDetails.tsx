@@ -152,7 +152,7 @@ const ProductDetails = () => {
     setIsModalOpen(false);
     resetForm();
   };
-  
+
   const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchProductDetails = async () => {
@@ -453,8 +453,8 @@ const ProductDetails = () => {
 
     try {
       const url = editId
-        ? `http://localhost:3000/product-details/${editId}`
-        : 'http://localhost:3000/product-details';
+        ? `${API_BASE_URL}/product-details/${editId}`
+        : `${API_BASE_URL}/product-details`;
 
       const method = editId ? 'PUT' : 'POST';
       const token = localStorage.getItem('access_token');
@@ -499,7 +499,7 @@ const ProductDetails = () => {
       );
 
       if (response.ok && !editId) {
-        await fetch(`http://localhost:3000/orders/${formData.orderId}`, {
+        await fetch(`${API_BASE_URL}/orders/${formData.orderId}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -571,7 +571,7 @@ const ProductDetails = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:3000/product-details/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/product-details/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
